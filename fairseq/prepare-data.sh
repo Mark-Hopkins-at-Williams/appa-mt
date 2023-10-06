@@ -25,15 +25,15 @@ SCRIPT_PATH=$(dirname $SCRIPT_NAME)
 
 BPEROOT=$SCRIPT_PATH/subword-nmt/subword_nmt
 
-src=fr
-tgt=en
-lang=fr-en
+src=$2
+tgt=$3
+lang=$2-$3
 orig=$1/data
 prep=$1/data-tokenized
 
 mkdir -p $prep
 
-TRAIN=$orig/train.en-fr
+TRAIN=$orig/train.$src-$tgt
 BPE_CODE=$prep/code
 rm -f $TRAIN
 for l in $src $tgt; do

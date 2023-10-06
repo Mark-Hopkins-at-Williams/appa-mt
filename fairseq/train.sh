@@ -6,7 +6,9 @@
 #SBATCH -e log_%j.err  # File to which STDERR will be written, %j inserts jobid
 #SBATCH --gres=gpu:1        # Request GPUs
 
-MAX_EPOCHS=5
+SRC=$3
+TGT=$4
+MAX_EPOCHS=$5
 
 mkdir $1
 cp -R $2 $1/
@@ -30,12 +32,12 @@ SCRIPT_PATH=$(dirname $SCRIPT_NAME)
 #
 ###########
 
-bash $SCRIPT_PATH/prepare-data.sh $1
+bash $SCRIPT_PATH/prepare-data.sh $1 $SRC $TGT
 
 TEXT=$1/data-tokenized
 BINARY_TEXT=$1/data-bin
 
-fairseq-preprocess --source-lang fr --target-lang en \
+fairseq-preprocess --source-lang $SRC --target-lang $TGT \
     --trainpref $TEXT/train --validpref $TEXT/dev --testpref $TEXT/test \
     --destdir $BINARY_TEXT \
     --scoring chrf \
